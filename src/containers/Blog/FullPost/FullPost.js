@@ -7,10 +7,13 @@ class FullPost extends Component {
     state={
         loadedPost:null
     }
-    componentDidUpdate(){
-        if(this.props.id){
-            if(!this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== this.props.id))
-            axios.get('https://jsonplaceholder.typicode.com/posts/' + this.props.id)
+    componentDidMount(){
+        console.log('fullpost mounted');
+        
+        console.log(this.props.match.params.id);
+        if(this.props.match.params.id){
+            if(!this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== this.props.match.params.id))
+            axios.get('/posts/' + this.props.match.params.id)
                 .then(response=>{
                     this.setState({loadedPost:response.data})
                     console.log(this.state.loadedPost);
@@ -19,21 +22,21 @@ class FullPost extends Component {
         
     }
     deletePostHandler = () => {
-        axios.get('https://jsonplaceholder.typicode.com/posts/' + this.props.id)
+        axios.get('/posts/' + this.props.match.params.id)
                 .then(response=>{
                     console.log(response);
                 });
     }
     render () {
         let post = <h1 style={{textAlign:"center", fontWeight:"bold", fontSize:"50px"}}>Please select a Post!</h1>;
-        if(this.props.id){
+        if(this.props.match.params.id){
             post = <h1 style={{textAlign:"center"}}>Loading...!</h1>;
         }
         if(this.state.loadedPost){
             post = (
                 <div className="FullPost">
                     <h1>{this.state.loadedPost.title}</h1>
-                    <p>{this.state.loadedPost.content}</p>
+                    <p>{this.state.loadedPost.body}</p>
                     <div className="Edit">
                         <button className="Delete" onClick={this.deletePostHandler}>Delete</button>
                     </div>

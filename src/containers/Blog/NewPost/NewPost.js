@@ -10,13 +10,18 @@ class NewPost extends Component {
         author: 'Abhijeeet'
     }
 
+    componentDidMount(){
+        console.log(this.props);
+        
+    }
+
     postDataHandler = () => {
         const post = {
             title:this.state.title,
             content: this.state.content,
             author:this.state.author
         }
-        axios.post('https://jsonplaceholder.typicode.com/posts',post)
+        axios.post('/posts',post)
             .then(res=>{
                 console.log(res);
                 
